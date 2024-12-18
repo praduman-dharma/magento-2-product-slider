@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <productslider>
+            <general>
+                <enabled>1</enabled>
+                <title>Featured Products</title>
+                <display_mode>grid</display_mode>
+                <product_limit>10</product_limit>
+            </general>
+        </productslider>
+    </default>
+</config>

@@ -1,21 +1,47 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="homepage.swatchrenderer">
-            <block class="Magento\Swatches\Block\Product\Renderer\Listing\Configurable" as="configurable" template="Magento_Swatches::product/listing/renderer.phtml">
+        <!-- Swatch Renderer Block -->
+        <referenceBlock name="cc_product_slider_renderers">
+            <block class="Magento\Swatches\Block\Product\Renderer\Listing\Configurable" 
+                   name="product_slider_configurable_swatches" 
+                   as="configurable" 
+                   template="Magento_Swatches::product/listing/renderer.phtml">
                 <arguments>
-                    <argument name="configurable_view_model" xsi:type="object">Magento\Swatches\ViewModel\Product\Renderer\Configurable</argument>
+                    <argument name="configurable_view_model" 
+                              xsi:type="object">Magento\Swatches\ViewModel\Product\Renderer\Configurable</argument>
                 </arguments>
             </block>
         </referenceBlock>
 
+        <!-- Product Slider Container -->
         <referenceContainer name="content">
-            <block class="Conceptive\ProductSlider\Block\ProductList" name="product_slider_block" template="Conceptive_ProductSlider::product_grid.phtml" after="-">
-                <block class="Magento\Framework\View\Element\RendererList" name="homepage.swatchrenderer" as="homepage.toprenderers">
-                    <block class="Magento\Framework\View\Element\Template" as="default"/>
+            <block class="Conceptive\ProductSlider\Block\ProductList" 
+                   name="cc_product_slider_block" 
+                   template="Conceptive_ProductSlider::product_grid.phtml" 
+                   after="-" ifconfig="productslider/general/enabled">
+                   
+                <!-- Renderer List Block -->
+                <block class="Magento\Framework\View\Element\RendererList" 
+                       name="cc_product_slider_renderers" 
+                       as="product_slider_renderers">
+                    <block class="Magento\Framework\View\Element\Template" 
+                           name="default_renderer" 
+                           as="default_renderer" />
                 </block>
-                <block class="Magento\Catalog\Block\Product\ProductList\Item\Container" name="upsell.product.addto" as="addto">
-                    <block class="Magento\Catalog\Block\Product\ProductList\Item\AddTo\Compare" name="upsell.product.addto.compare" as="compare" template="Magento_Catalog::product/list/addto/compare.phtml"/>
+                
+                <block class="Magento\Catalog\Block\Product\ProductList\Item\Container" 
+                       name="product_slider_addto" 
+                       as="addto">
+                    <block class="Magento\Wishlist\Block\Catalog\Product\ProductList\Item\AddTo\Wishlist" 
+                           name="product_slider_addto_wishlist" 
+                           as="addto_wishlist" 
+                           template="Magento_Wishlist::catalog/product/list/addto/wishlist.phtml"/>
+                    <block class="Magento\Catalog\Block\Product\ProductList\Item\AddTo\Compare" 
+                           name="product_slider_addto_compare" 
+                           as="addto_compare" 
+                           template="Magento_Catalog::product/list/addto/compare.phtml"/>
                 </block>
             </block>
         </referenceContainer>

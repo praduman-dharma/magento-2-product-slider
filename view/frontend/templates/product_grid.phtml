@@ -2,11 +2,12 @@
 
 use Magento\Framework\App\ActionInterface;
 
-$mode = 'grid';
-$class = $mode == 'slider' ? 'cc-product-slider' : 'cc-product-grid';
+$title = $block->getConfigValue('title');
+$mode = $block->getConfigValue('display_mode');
+
+$class = ($mode == 'slider') ? 'cc-product-slider' : 'cc-product-grid';
 
 $image = 'product_base_image';
-$title = __('Featured Products');
 
 $showAddTo = true;
 $showCart = true;
@@ -21,8 +22,11 @@ $_items = $block->getProductCollection();
 <?php if ($_items->getSize()): ?>
     <div class="block widget <?= $block->escapeHtmlAttr($class) ?>">
         <div class="block-title">
-            <strong><?= $block->escapeHtml($title) ?></strong>
+            <div class="content-heading">
+                <div class="title"><?= $block->escapeHtml($title) ?></div>
+            </div>
         </div>
+      
         <div class="block-content">
             <div class="products wrapper grid products-grid">
                 <ol class="products list items product-items">
@@ -52,7 +56,9 @@ $_items = $block->getProductCollection();
 
                                     <?php if ($showAddTo || $showCart):?>
                                         <?php // phpcs:disable ?>
-                                        <div class="product-item-inner">
+                                        <?php if ($mode != 'slider'): ?>
+                                            <div class="product-item-inner">
+                                        <?php endif; ?>
                                             <div class="product actions product-item-actions">
                                                 <?php if ($showCart):?>
                                                     <div class="actions-primary">
@@ -109,10 +115,11 @@ $_items = $block->getProductCollection();
                                                     </div>
                                                 <?php endif; ?>
                                             </div>
-                                        </div>
+                                        <?php if ($mode != 'slider'): ?>
+                                            </div>
+                                        <?php endif; ?>
                                         <?php // phpcs:enable ?>
                                     <?php endif; ?>
-
                                 </div>
                             </div>
                         </li>
@@ -124,3 +131,64 @@ $_items = $block->getProductCollection();
 <?php else: ?>
     <p><?= __('No products found.') ?></p>
 <?php endif; ?>
+
+<script>
+require(['jquery', 'slick'], function($){
+    $(document).ready(function() {
+        $('.cc-product-slider .product-items').slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            autoplay: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        dots: true
+                    }
+                },
+                {
+                    breakpoint: 992,
+                    settings: {
+                        slidesToShow: 4,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 769,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 640,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1
+                    }
+                }
+            ],
+        });
+    });
+});
+</script>
+
+<style>
+    .cc-product-slider .products-grid .product-item-actions{
+        margin-top: 0;
+    }
+    /* the slides */
+    .cc-product-slider .slick-slide {
+        margin: 10px 15px 0;
+    }
+
+    /* the parent */
+    .cc-product-slider .slick-list {
+        margin: 0 -15px;
+    }
+</style>

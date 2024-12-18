@@ -55,7 +55,12 @@ class ProductList extends AbstractProduct
         return $this->getDetailsRendererListName() ? $this->getLayout()->getBlock(
             $this->getDetailsRendererListName()
         ) : $this->getChildBlock(
-            'homepage.toprenderers'
+            'product_slider_renderers'
         );
+    }
+
+    public function getConfigValue($field, $storeId = null)
+    {
+        return $this->helper->getConfigValue($field, $storeId);
     }
 }
