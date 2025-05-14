@@ -28,8 +28,17 @@ class ProductList extends AbstractProduct
 
     public function getProductCollection()
     {
+        $productIds = $this->getData('product_ids');
+
         $limit = $this->helper->getProductLimit();
         $collection = $this->productCollectionFactory->create();
+
+        if ($productIds) {
+            $collection->addAttributeToFilter('entity_id', array('in' => $productIds));
+            $productIdsString = implode(',', $productIds);
+            $collection->getSelect()->order(new \Zend_Db_Expr('FIELD(e.entity_id, ' . $productIdsString . ')'));
+        }
+
         $collection->addAttributeToSelect(['name', 'image', 'price', 'special_price'])
                     ->addAttributeToFilter('type_id', 'configurable')
                     ->addAttributeToFilter("visibility", ['neq' => 1])

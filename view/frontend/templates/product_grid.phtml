@@ -2,7 +2,7 @@
 
 use Magento\Framework\App\ActionInterface;
 
-$title = $block->getConfigValue('title');
+$title = $block->getData('block_title') ?? $block->getConfigValue('title');
 $mode = $block->getConfigValue('display_mode');
 
 $class = ($mode == 'slider') ? 'cc-product-slider' : 'cc-product-grid';

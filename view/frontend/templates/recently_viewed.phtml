@@ -1,0 +1,33 @@
+<div class="cc-product-slider recently-viewed">
+
+</div>
+
+<script>
+    require(['jquery'], function($) {
+        var recentlySliderBlock = $('.cc-product-slider.recently-viewed');
+
+        // Get product IDs from localStorage
+        let viewedProducts = JSON.parse(localStorage.getItem('recently_viewed_product')) || {};
+        let productIds = Object.values(viewedProducts)
+            .sort((a, b) => b.added_at - a.added_at)
+            .map(item => item.product_id);
+
+        // Make AJAX request
+        $.ajax({
+            url: BASE_URL + 'ccproductslider/product/recentlyviewed',
+            type: 'POST',
+            data: {
+                product_ids: productIds
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.products && response.products.length) {
+                    recentlySliderBlock.html(response.products);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching recently viewed:', error);
+            }
+        });
+    });
+</script>

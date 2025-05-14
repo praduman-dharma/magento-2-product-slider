@@ -44,6 +44,19 @@
                            template="Magento_Catalog::product/list/addto/compare.phtml"/>
                 </block>
             </block>
+
+            <!-- Recently View Products -->
+            <block class="Conceptive\ProductSlider\Block\RecentlyViewed" name="recently_viewed" template="Magento_Catalog::product/widget/viewed/grid.phtml" after="-">
+                <arguments>
+                    <argument name="uiComponent" xsi:type="string">widget_recently_viewed</argument>
+                    <!-- <argument name="page_size" xsi:type="number">2</argument> -->
+                    <argument name="show_attributes" xsi:type="string">name,image,price,learn_more</argument>
+                    <argument name="show_buttons" xsi:type="string">add_to_cart,add_to_compare,add_to_wishlist</argument>
+                </arguments>
+            </block>
+
+            <!-- Recently View Products -->
+            <block class="Magento\Framework\View\Element\Template" name="recently_viewed_ajax" template="Conceptive_ProductSlider::recently_viewed.phtml" after="-" />
         </referenceContainer>
     </body>
 </page>
